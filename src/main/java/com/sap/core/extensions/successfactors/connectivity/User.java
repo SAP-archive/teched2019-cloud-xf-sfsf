@@ -4,26 +4,20 @@ import java.util.Objects;
 
 public class User {
 	private String userId;
-	private String firstName;
-	private String lastName;
 	private String title;
 	private String email;
-	private String username;
 	private String businessPhone;
+	private String defaultFullName;
+	private String photo;
+	private String location;
+	private String country;
+	private String department;
 
 	public User() {
 	}
 
 	public void setUserId(String userId) {
 		this.userId = userId;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	public void setTitle(String title) {
@@ -34,24 +28,12 @@ public class User {
 		this.email = email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	public void setBusinessPhone(String businessPhone) {
 		this.businessPhone = businessPhone;
 	}
 
 	public String getUserId() {
 		return userId;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
 	}
 
 	public String getTitle() {
@@ -62,17 +44,53 @@ public class User {
 		return email;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
 	public String getBusinessPhone() {
 		return businessPhone;
 	}
 
+	public String getDefaultFullName() {
+		return defaultFullName;
+	}
+
+	public void setDefaultFullName(String defaultFullName) {
+		this.defaultFullName = defaultFullName;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(businessPhone, email, firstName, lastName, title, userId, username);
+		return Objects.hash(businessPhone, country, defaultFullName, department, email, location, photo, title, userId);
 	}
 
 	@Override
@@ -84,16 +102,11 @@ public class User {
 		if (!(obj instanceof User))
 			return false;
 		User other = (User) obj;
-		return Objects.equals(businessPhone, other.businessPhone) && Objects.equals(email, other.email)
-				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
-				&& Objects.equals(title, other.title) && Objects.equals(userId, other.userId)
-				&& Objects.equals(username, other.username);
-	}
-
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", title=" + title
-				+ ", email=" + email + ", username=" + username + ", businessPhone=" + businessPhone + "]";
+		return Objects.equals(businessPhone, other.businessPhone) && Objects.equals(country, other.country)
+				&& Objects.equals(defaultFullName, other.defaultFullName)
+				&& Objects.equals(department, other.department) && Objects.equals(email, other.email)
+				&& Objects.equals(location, other.location) && Objects.equals(photo, other.photo)
+				&& Objects.equals(title, other.title) && Objects.equals(userId, other.userId);
 	}
 
 }

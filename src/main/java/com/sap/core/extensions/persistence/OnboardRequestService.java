@@ -24,9 +24,7 @@ public class OnboardRequestService {
 
 	public void createOnboardingRequest(User user, Token userToken) {
 
-		String fullName = user.getFirstName() + " " + user.getLastName();
-
-		ToDo todo = todoAccessor.createToDo(user.getUserId(), fullName, userToken);
+		ToDo todo = todoAccessor.createToDo(user.getUserId(), user.getDefaultFullName(), userToken);
 
 		requestRepository.saveNewOnboardingRequest(todo, user);
 	}

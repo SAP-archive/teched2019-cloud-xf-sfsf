@@ -12,7 +12,7 @@ public class UserDataAccessor {
 	private static final String USER_PATH = "/User";
 	private static final String PHOTO_QUERY_PATH = "/Photo?$select=photo&$filter=photoType eq '1' and userId eq '";
 	private static final String SHORT_DETAILS_QUERY = USER_PATH
-			+ "?$select=userId,firstName,lastName,title,email,username,businessPhone&$filter=userId eq '";
+			+ "?$select=userId,country,department,location,title,email,defaultFullName,businessPhone&$filter=userId eq '";
 
 	private static final String QUERY_SUFFIX = "'";
 
@@ -26,10 +26,14 @@ public class UserDataAccessor {
 	public User fetchUserProfile(String userName, Token userToken) {
 		SFUserResponse response = communicator.getWithUserPropagation(buildUserRequestPath(userName),
 				SFUserResponse.class, userToken);
-		return response.getD().getResults().get(0);
+		User user = response.getD().getResults().get(0);
+		String photo = fetchUserPicture(userName, userToken);
+		user.setPhoto(photo);
+
+		return user;
 	}
 
-	public String fetchUserPicture(String userName, Token userToken) {
+	private String fetchUserPicture(String userName, Token userToken) {
 		String resultString = communicator.getWithUserPropagation(buildPhotoRequestPath(userName), String.class,
 				userToken);
 

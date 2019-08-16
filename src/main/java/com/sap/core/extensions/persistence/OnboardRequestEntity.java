@@ -1,18 +1,15 @@
 package com.sap.core.extensions.persistence;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import com.sap.core.extensions.successfactors.connectivity.ToDo;
 import com.sap.core.extensions.successfactors.connectivity.User;
 
 public class OnboardRequestEntity {
-	private final String id;
 	private final ToDo todo;
 	private final User user;
 
 	OnboardRequestEntity(ToDo todo, User user) {
-		this.id = UUID.randomUUID().toString();
 		this.todo = todo;
 		this.user = user;
 	}
@@ -25,10 +22,6 @@ public class OnboardRequestEntity {
 		return todo;
 	}
 
-	public String getId() {
-		return id;
-	}
-
 	@Override
 	public String toString() {
 		return "OnboardRequestEntity [todo=" + todo + ", user=" + user + "]";
@@ -36,7 +29,7 @@ public class OnboardRequestEntity {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, todo, user);
+		return Objects.hash(todo, user);
 	}
 
 	@Override
@@ -48,7 +41,7 @@ public class OnboardRequestEntity {
 		if (!(obj instanceof OnboardRequestEntity))
 			return false;
 		OnboardRequestEntity other = (OnboardRequestEntity) obj;
-		return Objects.equals(id, other.id) && Objects.equals(todo, other.todo) && Objects.equals(user, other.user);
+		return Objects.equals(todo, other.todo) && Objects.equals(user, other.user);
 	}
 
 }

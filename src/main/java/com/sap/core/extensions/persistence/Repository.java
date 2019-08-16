@@ -18,7 +18,7 @@ public class Repository {
 	OnboardRequestEntity saveNewOnboardingRequest(ToDo todo, User userDTO) {
 		OnboardRequestEntity requestEntity = new OnboardRequestEntity(todo, userDTO);
 
-		USERS_ENTITY.put(requestEntity.getId(), requestEntity);
+		USERS_ENTITY.put(requestEntity.getTodo().getId(), requestEntity);
 
 		return requestEntity;
 	}

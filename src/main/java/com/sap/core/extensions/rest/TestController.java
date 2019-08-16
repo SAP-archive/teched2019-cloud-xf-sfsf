@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sap.cloud.security.xsuaa.token.Token;
 import com.sap.core.extensions.persistence.OnboardRequestEntity;
 import com.sap.core.extensions.persistence.OnboardRequestService;
+import com.sap.core.extensions.successfactors.connectivity.User;
 import com.sap.core.extensions.successfactors.connectivity.UserDataAccessor;
 
 @RestController
@@ -28,22 +29,21 @@ public class TestController {
 
 	}
 
-	@GetMapping(value = "/v1/onboardingRequests")
+	@GetMapping(value = "/v1/requests")
 	public ResponseEntity<Collection<OnboardRequestEntity>> listOnboardingRequests() {
 		Collection<OnboardRequestEntity> requests = onboardRequestService.listOnboardingRequests();
 
 		return ResponseEntity.ok(requests);
 	}
 
-	@GetMapping(value = "/v1/photos/{userId}")
-	public ResponseEntity<String> getUserPhoto(@PathVariable(name = "userId") String userId,
-			@AuthenticationPrincipal Token userToken) {
-		String photo = userAccessor.fetchUserPicture(userId, userToken);
+	@GetMapping(value = "/v1/currentUser")
+	public ResponseEntity<User> getUserPhoto(@AuthenticationPrincipal Token userToken) {
+		User currentUser = userAccessor.fetchUserProfile(userToken.getLogonName(), userToken);
 
-		return ResponseEntity.ok(photo);
+		return ResponseEntity.ok(currentUser);
 	}
 
-	@GetMapping(value = "/v1/onboardingRequests/{requestId}")
+	@GetMapping(value = "/v1/requests/{requestId}")
 	public ResponseEntity<?> deleteRequest(@PathVariable(name = "requestId") String requestId,
 			@AuthenticationPrincipal Token userToken) {
 		onboardRequestService.completeOnboardingRequest(requestId, userToken);
