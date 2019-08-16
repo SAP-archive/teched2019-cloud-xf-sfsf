@@ -2,7 +2,7 @@ sap.ui.define([], function() {
 	"use strict";
 
 	return {
-		serviceUrl : "teched/api/v1",
+		serviceUrl : "v1",
 		highContrastTheme : "sap_belize_hcb",
 		standardTheme : sap.ui.getCore().getConfiguration().getTheme(),
 
