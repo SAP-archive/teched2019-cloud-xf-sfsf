@@ -1,0 +1,40 @@
+<!DOCTYPE xml>
+<mvc:View xmlns='sap.m' xmlns:mvc="sap.ui.core.mvc"
+	controllerName="teched.controller.UserDetails">
+	<ResponsivePopover id="detailsPopover" placement="Bottom"
+		title="Employee Details">
+		<VBox class="sapUiSmallMargin">
+			<HBox class="sapUiSmallMarginBottom" justifyContent="Center">
+				<Image class="loginImage" src="{details>/employeePhoto}" />
+			</HBox>
+			<HBox class="sapUiTinyMarginBottom">
+				<Label class="detailsLabel" text="Name:" />
+				<Text text="{details>/employeeName}" />
+			</HBox>
+			<HBox class="sapUiTinyMarginBottom">
+				<Label class="detailsLabel" text="Email:" />
+				<Text text="{details>/employeeEmail}" />
+			</HBox>
+			<HBox class="sapUiTinyMarginBottom">
+				<Label class="detailsLabel" text="Phone:" />
+				<Text text="{details>/employeePhone}" />
+			</HBox>
+			<HBox class="sapUiTinyMarginBottom">
+				<Label class="detailsLabel" text="Department:" />
+				<Text text="{details>/employeeDepartment}" />
+			</HBox>
+			<HBox class="sapUiTinyMarginBottom">
+				<Label class="detailsLabel" text="Country" />
+				<Text text="{details>/employeeCountry}" />
+			</HBox>
+			<HBox class="sapUiTinyMarginBottom">
+				<Label class="detailsLabel" text="JobTitle:" />
+				<Text text="{details>/employeeTitle}" />
+			</HBox>
+			<HBox class="sapUiTinyMarginBottom">
+				<Label class="detailsLabel" text="Location" />
+				<Text text="{details>/employeeLocation}" />
+			</HBox>
+		</VBox>
+	</ResponsivePopover>
+</mvc:View> 
