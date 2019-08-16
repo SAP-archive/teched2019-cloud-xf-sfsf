@@ -27,7 +27,6 @@ public class InitController {
 
 	@GetMapping(value = "/v1/admin/init")
 	public ResponseEntity<?> init(@AuthenticationPrincipal Token token) {
-
 		User userProfile = userAccessor.fetchUserProfile(token.getLogonName(), token);
 		LOGGER.error("Recieved user profile {}" + userProfile);
 

@@ -30,7 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // session is created by approuter
 			.and()
 				.authorizeRequests()
-				.antMatchers("/v1/sayHello").hasAuthority("Read")
+				.antMatchers("/*").hasAuthority("Read")
 				.anyRequest().authenticated()
 			.and()
 				.oauth2ResourceServer()

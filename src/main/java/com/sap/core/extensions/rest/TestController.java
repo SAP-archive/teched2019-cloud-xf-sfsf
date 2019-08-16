@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,11 +30,21 @@ public class TestController {
 	}
 
 	@GetMapping(value = "/v1/requests")
-	public ResponseEntity<Collection<OnboardRequestEntity>> listOnboardingRequests() {
+	public ResponseEntity<Collection<OnboardRequestEntity>> listOnboardingRequests(
+			@AuthenticationPrincipal Token userToken) {
+//		if (onboardRequestService.listOnboardingRequests().isEmpty()) {
+//			loadPreset(userToken);
+//		}
+
 		Collection<OnboardRequestEntity> requests = onboardRequestService.listOnboardingRequests();
 
 		return ResponseEntity.ok(requests);
 	}
+
+//	private void loadPreset(Token userToken) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 	@GetMapping(value = "/v1/currentUser")
 	public ResponseEntity<User> getUserPhoto(@AuthenticationPrincipal Token userToken) {
@@ -43,7 +53,7 @@ public class TestController {
 		return ResponseEntity.ok(currentUser);
 	}
 
-	@GetMapping(value = "/v1/requests/{requestId}")
+	@DeleteMapping(value = "/v1/requests/{requestId}")
 	public ResponseEntity<?> deleteRequest(@PathVariable(name = "requestId") String requestId,
 			@AuthenticationPrincipal Token userToken) {
 		onboardRequestService.completeOnboardingRequest(requestId, userToken);

@@ -1,5 +1,7 @@
 package com.sap.core.extensions.successfactors.connectivity;
 
+import java.util.Collection;
+
 import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,4 +38,8 @@ public class ToDoAccessor {
 
 		communicator.postWithTechnicalUser(UPSERT_API_PATH, completeToDoPayload, token);
 	}
+
+//	public Collection<ToDo> listTodos(Token token) {
+//		communicator.getWithUserPropagation(API_PATH +"?$filter=categoryId eq '41' and status eq 2 and subjectId eq '"+token.getLogonName() + "'", responseEntity, userToken)
+//	}
 }

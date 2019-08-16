@@ -29,7 +29,7 @@ sap.ui.define([
 			
 			jQuery.ajax({
 				method: "GET",
-				url: Config.serviceUrl + "/user",
+				url: Config.serviceUrl + "/currentUser",
 				context: this
 			}).done(setUserModel);
 		},
@@ -57,19 +57,19 @@ sap.ui.define([
 		completeRequest : function(evt) {
 			var listItem = evt.getSource();
 			var bindingContext = listItem.getBindingContext("requests");
-			var id = bindingContext.getProperty("userId");
+			var id = bindingContext.getProperty("todo").id;
 
 			function removeRequestFromModel(data) {
 				var requestsModel = bindingContext.getModel();
 				var requests = requestsModel.getProperty("/newEmployees");
 				var newRequests = requests.filter(function(req) {
-					return req.userId !== id;
+					return req.todo.id !== id;
 				});
 				requestsModel.setProperty("/newEmployees", newRequests);
 			}
 			
 			jQuery.ajax({
-				method: "PUT",
+				method: "DELETE",
 				url: Config.serviceUrl + "/requests/" + id,
 				context: this,
 				data: {
