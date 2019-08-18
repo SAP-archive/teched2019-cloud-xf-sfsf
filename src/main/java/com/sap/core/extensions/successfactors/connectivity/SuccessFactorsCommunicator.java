@@ -32,9 +32,8 @@ public class SuccessFactorsCommunicator {
 		return client.get(url + relativePath, responseEntity, token);
 	}
 
-	public <T> JSONObject postWithTechnicalUser(String relativePath, T requestEntity, Token token) {
-		OAuthBearerDestination destination = destinationProvider.fetchBearerDestination(TECHNICAL_USER_DESTINATION_NAME,
-				token, false);
+	public <T> JSONObject postWithTechnicalUser(String relativePath, T requestEntity) {
+		OAuthBearerDestination destination = destinationProvider.fetchBearerDestination(TECHNICAL_USER_DESTINATION_NAME);
 		String url = destination.getUrl();
 		String sfToken = destination.getBearerToken();
 

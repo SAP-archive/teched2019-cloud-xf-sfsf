@@ -1,7 +1,13 @@
 package com.sap.core.extensions.connectivity.cf;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.cloudfoundry.identity.client.UaaContext;
+import org.cloudfoundry.identity.client.UaaContextFactory;
+import org.cloudfoundry.identity.client.token.GrantType;
+import org.cloudfoundry.identity.client.token.TokenRequest;
+import org.cloudfoundry.identity.uaa.oauth.token.CompositeAccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +28,37 @@ public class TokenManager {
 
 	}
 
-	public String exchangeTokenForDestinationService(Token token, boolean propagateUser) {
+	public String getTokenForDestinationServce() {
+		CfCredentials xsuaCredentials = credentialsProvider.getXSUAАCredentials();
+		String xsuaaURI = xsuaCredentials.getUri();
+
+		DestinationServiceCredentials destinationCredentials = credentialsProvider.getDestinationCredentials();
+		String destinationServiceClientId = destinationCredentials.getClientId();
+		String destinationServiceClientSecret = destinationCredentials.getClientSecret();
+
+		// get value of "clientid" and "clientsecret" from the environment variables
+
+		// get the URL to xsuaa from the environment variables
+		URI xsuaaUrl;
+		try {
+			xsuaaUrl = new URI(xsuaaURI);
+		} catch (URISyntaxException e) {
+			throw new IllegalStateException(e);
+		}
+
+		// Make request to UAA to retrieve JWT
+		UaaContextFactory factory = UaaContextFactory.factory(xsuaaUrl);
+		TokenRequest tokenRequest = factory.tokenRequest();
+		tokenRequest.setGrantType(GrantType.CLIENT_CREDENTIALS);
+		tokenRequest.setClientId(destinationServiceClientId);
+		tokenRequest.setClientSecret(destinationServiceClientSecret);
+
+		UaaContext xsUaaContext = factory.authenticate(tokenRequest);
+		CompositeAccessToken token = xsUaaContext.getToken();
+		return token.getValue();
+	}
+
+	public String exchangeTokenForDestinationService(Token token) {
 		CfCredentials xsuaCredentials = credentialsProvider.getXSUAАCredentials();
 		String xsuaaURI = xsuaCredentials.getUri();
 
@@ -32,7 +68,7 @@ public class TokenManager {
 
 		try {
 			XSTokenRequest tokenRequest = createTokenRequest(xsuaaURI, destinationServiceClientId,
-					destinationServiceClientSecret, propagateUser);
+					destinationServiceClientSecret);
 
 			return token.requestToken(tokenRequest);
 		} catch (URISyntaxException e) {
@@ -41,11 +77,10 @@ public class TokenManager {
 	}
 
 	private XSTokenRequest createTokenRequest(String xsuaaUri, String destinationServiceClientId,
-			String destinationServiceClientSecret, boolean propagateUser) throws URISyntaxException {
+			String destinationServiceClientSecret) throws URISyntaxException {
 		XSTokenRequest tokenRequest = new XSTokenRequestImpl(xsuaaUri);
 
-		int tokenType = propagateUser ? XSTokenRequest.TYPE_USER_TOKEN : XSTokenRequest.TYPE_CLIENT_CREDENTIALS_TOKEN;
-		tokenRequest.setType(tokenType);
+		tokenRequest.setType(XSTokenRequest.TYPE_USER_TOKEN);
 		tokenRequest.setClientId(destinationServiceClientId);
 		tokenRequest.setClientSecret(destinationServiceClientSecret);
 

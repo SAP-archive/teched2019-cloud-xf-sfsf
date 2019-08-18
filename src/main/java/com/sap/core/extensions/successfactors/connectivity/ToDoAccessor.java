@@ -22,10 +22,10 @@ public class ToDoAccessor {
 		this.communicator = communicator;
 	}
 
-	public ToDo createToDo(String userId, String userName, Token token) {
+	public ToDo createToDo(String userId, String userName) {
 		ToDoRequestDTO todo = new ToDoRequestDTO(userId, userName);
 		LoggerFactory.getLogger(ToDoAccessor.class).error("TODO DTO {}", new JSONObject(todo).toString());
-		JSONObject response = communicator.postWithTechnicalUser(API_PATH, todo, token);
+		JSONObject response = communicator.postWithTechnicalUser(API_PATH, todo);
 
 		String name = (String) response.query("/d/todoEntryName");
 		String id = (String) response.query("/d/todoEntryId");
@@ -33,13 +33,15 @@ public class ToDoAccessor {
 		return new ToDo(id, name);
 	}
 
-	public void completeTodo(ToDo todo, Token token) {
+	public void completeTodo(ToDo todo) {
 		String completeToDoPayload = COMPLETE_TODO_REQUEST_PREFIX + todo.getId() + COMPLETE_TODO_REQUEST_SUFFIX;
 
-		communicator.postWithTechnicalUser(UPSERT_API_PATH, completeToDoPayload, token);
+		communicator.postWithTechnicalUser(UPSERT_API_PATH, completeToDoPayload);
 	}
 
-//	public Collection<ToDo> listTodos(Token token) {
-//		communicator.getWithUserPropagation(API_PATH +"?$filter=categoryId eq '41' and status eq 2 and subjectId eq '"+token.getLogonName() + "'", responseEntity, userToken)
-//	}
+	// public Collection<ToDo> listTodos(Token token) {
+	// communicator.getWithUserPropagation(API_PATH +"?$filter=categoryId eq '41'
+	// and status eq 2 and subjectId eq '"+token.getLogonName() + "'",
+	// responseEntity, userToken)
+	// }
 }

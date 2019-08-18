@@ -24,7 +24,7 @@ public class OnboardRequestService {
 
 	public void createOnboardingRequest(User user, Token userToken) {
 
-		ToDo todo = todoAccessor.createToDo(user.getUserId(), user.getDefaultFullName(), userToken);
+		ToDo todo = todoAccessor.createToDo(user.getUserId(), user.getDefaultFullName());
 
 		requestRepository.saveNewOnboardingRequest(todo, user);
 	}
@@ -33,7 +33,7 @@ public class OnboardRequestService {
 
 		OnboardRequestEntity request = requestRepository.removeOnboardingRequest(requestId);
 
-		todoAccessor.completeTodo(request.getTodo(), userToken);
+		todoAccessor.completeTodo(request.getTodo());
 	}
 
 	public Collection<OnboardRequestEntity> listOnboardingRequests() {

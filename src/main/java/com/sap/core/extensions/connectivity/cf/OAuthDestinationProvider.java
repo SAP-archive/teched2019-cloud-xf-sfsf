@@ -28,7 +28,7 @@ public class OAuthDestinationProvider {
 
 	public OAuthBearerDestination fetchBearerDestination(String destinationName, Token userToken,
 			boolean propagateUser) {
-		JSONObject destination = fetchDestination(destinationName, userToken, propagateUser);
+		JSONObject destination = fetchDestination(destinationName, userToken);
 
 		String url = (String) destination.query(PATH_TO_URL);
 		String token = (String) destination.query(PATH_TO_TOKEN);
@@ -36,8 +36,21 @@ public class OAuthDestinationProvider {
 		return new OAuthBearerDestination(url, token);
 	}
 
-	private JSONObject fetchDestination(String destinationName, Token userToken, boolean propagateUser) {
-		String tokenForDestinationService = tokenExchanger.exchangeTokenForDestinationService(userToken, propagateUser);
+	public OAuthBearerDestination fetchBearerDestination(String destinationName) {
+		String tokenForDestinationService = tokenExchanger.getTokenForDestinationServce();
+
+		String destinationServiceResponse = client.get(destinationServiceAPIPath + destinationName, String.class,
+				tokenForDestinationService);
+		JSONObject destination = new JSONObject(destinationServiceResponse);
+
+		String url = (String) destination.query(PATH_TO_URL);
+		String token = (String) destination.query(PATH_TO_TOKEN);
+
+		return new OAuthBearerDestination(url, token);
+	}
+
+	private JSONObject fetchDestination(String destinationName, Token userToken) {
+		String tokenForDestinationService = tokenExchanger.exchangeTokenForDestinationService(userToken);
 
 		String destinationServiceResponse = client.get(destinationServiceAPIPath + destinationName, String.class,
 				tokenForDestinationService);
