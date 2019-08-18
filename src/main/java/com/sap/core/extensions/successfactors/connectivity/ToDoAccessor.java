@@ -13,8 +13,8 @@ import com.sap.cloud.security.xsuaa.token.Token;
 public class ToDoAccessor {
 	private static final String API_PATH = "/TodoEntryV2";
 	private static final String UPSERT_API_PATH = "/upsert";
-	private static final String COMPLETE_TODO_REQUEST_PREFIX = "{\"__metadata\":{\"uri\":\"TodoEntryV2('";
-	private static final String COMPLETE_TODO_REQUEST_SUFFIX = "')\"}, \"status\":\"3\"}";
+	private static final String COMPLETE_TODO_REQUEST_PREFIX = "{\"__metadata\":{\"uri\":\"TodoEntryV2(";
+	private static final String COMPLETE_TODO_REQUEST_SUFFIX = "M)\"}, \"status\":\"3\"}";
 	private final SuccessFactorsCommunicator communicator;
 
 	@Autowired
