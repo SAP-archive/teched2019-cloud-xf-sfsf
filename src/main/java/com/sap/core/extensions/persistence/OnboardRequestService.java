@@ -28,6 +28,13 @@ public class OnboardRequestService {
 
 		requestRepository.saveNewOnboardingRequest(todo, user);
 	}
+	
+	public void createOnboardingRequest(String todoUserId,User relocatedUser, Token userToken) {
+
+		ToDo todo = todoAccessor.createToDo(todoUserId, relocatedUser.getDefaultFullName());
+
+		requestRepository.saveNewOnboardingRequest(todo, relocatedUser);
+	}
 
 	public void completeOnboardingRequest(String requestId, Token userToken) {
 

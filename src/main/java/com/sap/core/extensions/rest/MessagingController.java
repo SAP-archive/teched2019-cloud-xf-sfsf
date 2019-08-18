@@ -31,16 +31,21 @@ public class MessagingController {
 	
 	@PostMapping(value = "/v1/webhook")
 	public void onMessage(HttpServletRequest request, @RequestBody String body) {
-		//{"firstName":"Aanya","lastName":"Singh","jobTitle":"Administrative Support","userId":"sfadmin"}
+		// ["{"firstName":"Aanya","lastName":"Singh","createdBy":"100113","jobTitle":"Administrative Support","userId":"sfadmin"}
 		JSONObject bodyJson = new JSONObject(body);
 		String userId = (String) bodyJson.query("/userId");
+		String fullName = (String) bodyJson.query("/firstName") + " " +  (String) bodyJson.query("/lastName");
 
 		User user = new User();
 		user.setUserId(userId);
+		user.setDefaultFullName(fullName);
 		
-		onboardRequestService.createOnboardingRequest(user, null);
+		String todoUserId = (String) bodyJson.query("/createdBy");
+		
+		onboardRequestService.createOnboardingRequest(todoUserId, user, null);
 		
 		LOGGER.error(body);
-		
 	}
 }
+
+
