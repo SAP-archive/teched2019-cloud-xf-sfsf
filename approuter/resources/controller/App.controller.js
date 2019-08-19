@@ -57,13 +57,13 @@ sap.ui.define([
 		completeRequest : function(evt) {
 			var listItem = evt.getSource();
 			var bindingContext = listItem.getBindingContext("requests");
-			var id = bindingContext.getProperty("todo").id;
+			var id = bindingContext.getProperty("todo").todoEntryId;
 
 			function removeRequestFromModel(data) {
 				var requestsModel = bindingContext.getModel();
 				var requests = requestsModel.getProperty("/newEmployees");
 				var newRequests = requests.filter(function(req) {
-					return req.todo.id !== id;
+					return req.todo.todoEntryId !== id;
 				});
 				requestsModel.setProperty("/newEmployees", newRequests);
 			}

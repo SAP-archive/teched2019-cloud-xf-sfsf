@@ -1,56 +1,32 @@
 package com.sap.core.extensions.successfactors.connectivity;
 
-import java.util.Objects;
-
 public class ToDo {
-	private String id;
-	private String name;
+	
+	private String todoEntryId;
+	private String todoEntryName;
 
 	public ToDo() {
 		this(null, null);
 	}
 
 	public ToDo(String id, String name) {
-		this.id = id;
-		this.name = name;
+		this.todoEntryId = id;
+		this.todoEntryName = name;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public String getTodoEntryId() {
+		return todoEntryId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTodoEntryId(String todoEntryId) {
+		this.todoEntryId = todoEntryId;
 	}
 
-	public String getId() {
-		return id;
+	public String getTodoEntryName() {
+		return todoEntryName;
 	}
 
-	public String getName() {
-		return name;
+	public void setTodoEntryName(String todoEntryName) {
+		this.todoEntryName = todoEntryName;
 	}
-
-	@Override
-	public String toString() {
-		return "ToDo [id=" + id + ", name=" + name + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, name);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof ToDo))
-			return false;
-		ToDo other = (ToDo) obj;
-		return Objects.equals(id, other.id) && Objects.equals(name, other.name);
-	}
-
 }

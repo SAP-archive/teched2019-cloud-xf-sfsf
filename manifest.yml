@@ -7,6 +7,7 @@ applications:
 - name: spring-app
   instances: 1
   memory: 896M
+  buildpack: java_buildpack
   routes:
     - route: spring-app-i308633.cfapps.eu10.hana.ondemand.com
   path: target/spring-app.jar

@@ -1,9 +1,10 @@
 package com.sap.core.extensions.rest;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +24,8 @@ import com.sap.core.extensions.successfactors.connectivity.UserDataAccessor;
 @RestController
 public class TestController {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(TestController.class);
+	
 	private final OnboardRequestService onboardRequestService;
 	private final UserDataAccessor userAccessor;
 	private final ToDoAccessor todoAccessor;
@@ -39,7 +42,9 @@ public class TestController {
 	@GetMapping(value = "/v1/requests")
 	public ResponseEntity<Collection<OnboardRequestEntity>> listOnboardingRequests(
 			@AuthenticationPrincipal Token userToken) {
+		
 		if (onboardRequestService.listOnboardingRequests().isEmpty()) {
+			LOGGER.error("Requests are empty. Loading predefined onboarding requests");
 			loadPreset(userToken);
 		}
 
@@ -50,12 +55,20 @@ public class TestController {
 
 	private void loadPreset(Token userToken) {
 		List<ToDo> listUserTodos = todoAccessor.listUserTodos(userToken.getLogonName());
-		for( ToDo todo : listUserTodos) {
-			todo.getName(); //parse user id "Onboard Name Name (userId)"
-			//call onboardRequestService.createOnboardingRequest(userToken.getLogonName(), userId);
+
+		for (ToDo todo : listUserTodos) {
+			String todoName = todo.getTodoEntryName();
+			String relocatedUserId = todoName.substring(todoName.indexOf('(') + 1, todoName.indexOf(')'));
+
+			onboardRequestService.saveOnboardingRequest(todo, relocatedUserId);
 		}
 	}
 
+	public static void main(String[] args) {
+		String todoName = "Onboard Aanya Singh(sfadmin)";
+		System.out.println(todoName.substring(todoName.indexOf('(') + 1, todoName.indexOf(')')));
+	}	
+	
 	@GetMapping(value = "/v1/currentUser")
 	public ResponseEntity<User> getUserPhoto(@AuthenticationPrincipal Token userToken) {
 		User currentUser = userAccessor.fetchUserProfile(userToken.getLogonName(), userToken);

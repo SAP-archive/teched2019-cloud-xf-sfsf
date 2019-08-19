@@ -26,15 +26,20 @@ public class OnboardRequestService {
 		this.userAccessor = userAccessor;
 	}
 
-	public void createOnboardingRequest(String onboarAdministratorUserId, String relocatedUserId) {
+	public void createOnboardingRequest(String onboardAdministratorUserId, String relocatedUserId) {
 		User relocatedUser = userAccessor.fetchUserProfile(relocatedUserId);
 
-		ToDo todo = todoAccessor.createToDo(onboarAdministratorUserId, relocatedUser.getDefaultFullName(),
+		ToDo todo = todoAccessor.createToDo(onboardAdministratorUserId, relocatedUser.getDefaultFullName(),
 				relocatedUserId);
 
 		requestRepository.saveNewOnboardingRequest(todo, relocatedUser);
 	}
 
+	public void saveOnboardingRequest(ToDo todo, String relocatedUserId) {
+		User relocatedUser = userAccessor.fetchUserProfile(relocatedUserId);
+		requestRepository.saveNewOnboardingRequest(todo, relocatedUser);
+	}
+	
 	public void completeOnboardingRequest(String requestId, Token userToken) {
 
 		OnboardRequestEntity request = requestRepository.removeOnboardingRequest(requestId);

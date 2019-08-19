@@ -1,6 +1,8 @@
 package com.sap.core.extensions.successfactors.connectivity;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,8 @@ public class SuccessFactorsCommunicator {
 
 	private static final String USER_PROGAGATION_DESTINATION_NAME = "SFOAuth";
 	private static final String TECHNICAL_USER_DESTINATION_NAME = "SFOAuth_SYSTEM";
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(SuccessFactorsCommunicator.class);
 
 	private final OAuthRESTClient client;
 	private final OAuthDestinationProvider destinationProvider;
@@ -53,6 +57,8 @@ public class SuccessFactorsCommunicator {
 		String url = destination.getUrl();
 		String token = destination.getBearerToken();
 
+		LOGGER.error("Bearer token for SFSF: " + token);
+		
 		return client.get(url + relativePath, responseEntity, token);
 	}
 }

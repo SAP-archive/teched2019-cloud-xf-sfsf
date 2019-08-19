@@ -18,7 +18,7 @@ public class ToDoAccessor {
 	private static final String UPSERT_API_PATH = "/upsert";
 	private static final String COMPLETE_TODO_REQUEST_PREFIX = "{\"__metadata\":{\"uri\":\"TodoEntryV2(";
 	private static final String COMPLETE_TODO_REQUEST_SUFFIX = "M)\"}, \"status\":\"3\"}";
-	private static final String USER_TODOS_QUERY = "?$expand=userNav&$select=todoEntryId,todoEntryName,status,userNav/userId&$filter=categoryId eq '41' and userNav/userId eq 'sfadmin' and status eq 2";
+	private static final String USER_TODOS_QUERY = "?$expand=userNav&$select=todoEntryId,todoEntryName,status,userNav/userId&$filter=categoryId eq '41' and userNav/userId eq '%s' and status eq 2";
 
 	private final SuccessFactorsCommunicator communicator;
 	private final ODataResponseUtils responseUtils;
@@ -41,15 +41,14 @@ public class ToDoAccessor {
 	}
 
 	public void completeTodo(ToDo todo) {
-		String completeToDoPayload = COMPLETE_TODO_REQUEST_PREFIX + todo.getId() + COMPLETE_TODO_REQUEST_SUFFIX;
+		String completeToDoPayload = COMPLETE_TODO_REQUEST_PREFIX + todo.getTodoEntryId() + COMPLETE_TODO_REQUEST_SUFFIX;
 
 		communicator.postWithTechnicalUser(UPSERT_API_PATH, completeToDoPayload);
 	}
 
 	public List<ToDo> listUserTodos(String userId) {
-		String responseString = communicator.getWithTechnicalUser(API_PATH + USER_TODOS_QUERY, String.class);
+		String responseString = communicator.getWithTechnicalUser(API_PATH + String.format(USER_TODOS_QUERY, userId), String.class);
 
 		return responseUtils.readODataResponse(responseString, TODO_LIST_TYPE);
-
 	}
 }

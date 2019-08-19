@@ -21,7 +21,7 @@
 					<items>
 						<ColumnListItem type="Active" press="showDetails">
 							<cells>
-								<Text class="myFontSize" text="{requests>todo/name}" />
+								<Text class="myFontSize" text="{requests>todo/todoEntryName}" />
 								<Button text="Complete" type="Accept" icon="sap-icon://accept"
 									press="completeRequest" />
 							</cells>
