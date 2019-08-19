@@ -9,29 +9,28 @@ import com.sap.cloud.security.xsuaa.token.Token;
 import com.sap.core.extensions.successfactors.connectivity.ToDo;
 import com.sap.core.extensions.successfactors.connectivity.ToDoAccessor;
 import com.sap.core.extensions.successfactors.connectivity.User;
+import com.sap.core.extensions.successfactors.connectivity.UserDataAccessor;
 
 @Component
 public class OnboardRequestService {
 
 	private final ToDoAccessor todoAccessor;
 	private final Repository requestRepository;
+	private final UserDataAccessor userAccessor;
 
 	@Autowired
-	public OnboardRequestService(ToDoAccessor todoAccessor, Repository requestRepository) {
+	public OnboardRequestService(ToDoAccessor todoAccessor, Repository requestRepository,
+			UserDataAccessor userAccessor) {
 		this.todoAccessor = todoAccessor;
 		this.requestRepository = requestRepository;
+		this.userAccessor = userAccessor;
 	}
 
-	public void createOnboardingRequest(User user, Token userToken) {
+	public void createOnboardingRequest(String onboarAdministratorUserId, String relocatedUserId) {
+		User relocatedUser = userAccessor.fetchUserProfile(relocatedUserId);
 
-		ToDo todo = todoAccessor.createToDo(user.getUserId(), user.getDefaultFullName());
-
-		requestRepository.saveNewOnboardingRequest(todo, user);
-	}
-	
-	public void createOnboardingRequest(String todoUserId,User relocatedUser, Token userToken) {
-
-		ToDo todo = todoAccessor.createToDo(todoUserId, relocatedUser.getDefaultFullName());
+		ToDo todo = todoAccessor.createToDo(onboarAdministratorUserId, relocatedUser.getDefaultFullName(),
+				relocatedUserId);
 
 		requestRepository.saveNewOnboardingRequest(todo, relocatedUser);
 	}

@@ -1,6 +1,8 @@
 package com.sap.core.extensions.rest;
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sap.cloud.security.xsuaa.token.Token;
 import com.sap.core.extensions.persistence.OnboardRequestEntity;
 import com.sap.core.extensions.persistence.OnboardRequestService;
+import com.sap.core.extensions.successfactors.connectivity.ToDo;
+import com.sap.core.extensions.successfactors.connectivity.ToDoAccessor;
 import com.sap.core.extensions.successfactors.connectivity.User;
 import com.sap.core.extensions.successfactors.connectivity.UserDataAccessor;
 
@@ -20,31 +24,37 @@ import com.sap.core.extensions.successfactors.connectivity.UserDataAccessor;
 public class TestController {
 
 	private final OnboardRequestService onboardRequestService;
-	private UserDataAccessor userAccessor;
+	private final UserDataAccessor userAccessor;
+	private final ToDoAccessor todoAccessor;
 
 	@Autowired
-	public TestController(OnboardRequestService onboardRequestService, UserDataAccessor userAccessor) {
+	public TestController(OnboardRequestService onboardRequestService, UserDataAccessor userAccessor,
+			ToDoAccessor todoAccessor) {
 		this.onboardRequestService = onboardRequestService;
 		this.userAccessor = userAccessor;
+		this.todoAccessor = todoAccessor;
 
 	}
 
 	@GetMapping(value = "/v1/requests")
 	public ResponseEntity<Collection<OnboardRequestEntity>> listOnboardingRequests(
 			@AuthenticationPrincipal Token userToken) {
-//		if (onboardRequestService.listOnboardingRequests().isEmpty()) {
-//			loadPreset(userToken);
-//		}
+		if (onboardRequestService.listOnboardingRequests().isEmpty()) {
+			loadPreset(userToken);
+		}
 
 		Collection<OnboardRequestEntity> requests = onboardRequestService.listOnboardingRequests();
 
 		return ResponseEntity.ok(requests);
 	}
 
-//	private void loadPreset(Token userToken) {
-//		// TODO Auto-generated method stub
-//		
-//	}
+	private void loadPreset(Token userToken) {
+		List<ToDo> listUserTodos = todoAccessor.listUserTodos(userToken.getLogonName());
+		for( ToDo todo : listUserTodos) {
+			todo.getName(); //parse user id "Onboard Name Name (userId)"
+			//call onboardRequestService.createOnboardingRequest(userToken.getLogonName(), userId);
+		}
+	}
 
 	@GetMapping(value = "/v1/currentUser")
 	public ResponseEntity<User> getUserPhoto(@AuthenticationPrincipal Token userToken) {

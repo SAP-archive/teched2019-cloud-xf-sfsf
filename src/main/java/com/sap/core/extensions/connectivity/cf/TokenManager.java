@@ -36,9 +36,6 @@ public class TokenManager {
 		String destinationServiceClientId = destinationCredentials.getClientId();
 		String destinationServiceClientSecret = destinationCredentials.getClientSecret();
 
-		// get value of "clientid" and "clientsecret" from the environment variables
-
-		// get the URL to xsuaa from the environment variables
 		URI xsuaaUrl;
 		try {
 			xsuaaUrl = new URI(xsuaaURI);

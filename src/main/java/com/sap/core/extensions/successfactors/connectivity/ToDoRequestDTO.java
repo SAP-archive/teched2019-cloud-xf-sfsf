@@ -17,8 +17,8 @@ public class ToDoRequestDTO {
 	private final String linkUrl;
 	private final UserNavRequestDTO userNav;
 
-	public ToDoRequestDTO(String subjectId, String userName) {
-		this.todoEntryName = "Onboard " + userName;
+	public ToDoRequestDTO(String subjectId, String relocatedUserName, String relocatedUserId) {
+		this.todoEntryName = "Onboard " + relocatedUserName + "(" + relocatedUserId + ")";
 		this.status = STATUS_CURRENT;
 		this.subjectId = subjectId;
 		this.categoryId = INTELLIGENT_SERVICE_CATEGORY;

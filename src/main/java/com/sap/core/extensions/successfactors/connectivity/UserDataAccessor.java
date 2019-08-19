@@ -1,14 +1,20 @@
 package com.sap.core.extensions.successfactors.connectivity;
 
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.cloud.security.xsuaa.token.Token;
+import com.sap.core.extensions.successfactors.connectivity.util.ODataResponseUtils;
 
 @Component
 public class UserDataAccessor {
+	private static final TypeReference<List<User>> USER_LIST_TYPE = new TypeReference<List<User>>() {
+	};
 	private static final String USER_PATH = "/User";
 	private static final String PHOTO_QUERY_PATH = "/Photo?$select=photo&$filter=photoType eq '1' and userId eq '";
 	private static final String SHORT_DETAILS_QUERY = USER_PATH
@@ -16,17 +22,29 @@ public class UserDataAccessor {
 
 	private static final String QUERY_SUFFIX = "'";
 
-	private SuccessFactorsCommunicator communicator;
+	private final SuccessFactorsCommunicator communicator;
+	private final ODataResponseUtils responseUtils;
 
 	@Autowired
-	public UserDataAccessor(SuccessFactorsCommunicator communicator) {
+	public UserDataAccessor(SuccessFactorsCommunicator communicator, ODataResponseUtils responseUtils) {
 		this.communicator = communicator;
+		this.responseUtils = responseUtils;
+	}
+
+	public User fetchUserProfile(String userName) {
+		return fetchUserProfile(userName, null);
 	}
 
 	public User fetchUserProfile(String userName, Token userToken) {
-		SFUserResponse response = communicator.getWithUserPropagation(buildUserRequestPath(userName),
-				SFUserResponse.class, userToken);
-		User user = response.getD().getResults().get(0);
+		String response;
+		if (null == userToken) {
+			response = communicator.getWithTechnicalUser(buildUserRequestPath(userName), String.class);
+		} else {
+			response = communicator.getWithUserPropagation(buildUserRequestPath(userName), String.class, userToken);
+		}
+		List<User> users = responseUtils.readODataResponse(response, USER_LIST_TYPE);
+
+		User user = users.get(0);
 		String photo = fetchUserPicture(userName, userToken);
 		user.setPhoto(photo);
 
@@ -34,8 +52,13 @@ public class UserDataAccessor {
 	}
 
 	private String fetchUserPicture(String userName, Token userToken) {
-		String resultString = communicator.getWithUserPropagation(buildPhotoRequestPath(userName), String.class,
-				userToken);
+		String resultString;
+		if (null == userToken) {
+			resultString = communicator.getWithTechnicalUser(buildPhotoRequestPath(userName), String.class);
+		} else {
+			resultString = communicator.getWithUserPropagation(buildPhotoRequestPath(userName), String.class,
+					userToken);
+		}
 
 		JSONObject jsonObject = new JSONObject(resultString);
 		JSONArray query = (JSONArray) jsonObject.query("/d/results");

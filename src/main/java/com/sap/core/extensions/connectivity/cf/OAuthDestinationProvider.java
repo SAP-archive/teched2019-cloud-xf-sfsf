@@ -26,8 +26,7 @@ public class OAuthDestinationProvider {
 				+ GET_DESTINATION_API_PATH;
 	}
 
-	public OAuthBearerDestination fetchBearerDestination(String destinationName, Token userToken,
-			boolean propagateUser) {
+	public OAuthBearerDestination fetchBearerDestination(String destinationName, Token userToken) {
 		JSONObject destination = fetchDestination(destinationName, userToken);
 
 		String url = (String) destination.query(PATH_TO_URL);
