@@ -39,11 +39,13 @@ public class OnboardRequestService {
 		User relocatedUser = userAccessor.fetchUserProfile(relocatedUserId);
 		requestRepository.saveNewOnboardingRequest(todo, relocatedUser);
 	}
-	
+
 	public void completeOnboardingRequest(String requestId, Token userToken) {
 
 		OnboardRequestEntity request = requestRepository.removeOnboardingRequest(requestId);
-
+		if (null == request) {
+			return;
+		}
 		todoAccessor.completeTodo(request.getTodo());
 	}
 

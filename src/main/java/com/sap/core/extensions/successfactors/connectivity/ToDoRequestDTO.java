@@ -34,10 +34,6 @@ public class ToDoRequestDTO {
 		return "/Date(" + nextWeek + ")/";
 	}
 
-	public static void main(String[] args) {
-		System.out.println(getNextWeekDate());
-	}
-
 	public String getTodoEntryName() {
 		return todoEntryName;
 	}
