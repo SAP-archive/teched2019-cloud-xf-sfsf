@@ -1,15 +1,12 @@
 ---
-# Configuration:
-# configured for EU10. For other landscapes, please adopt LANDSCAPE_APPS_DOMAIN in ../vars.yml
-# If the route is occupied, you might need to change ID in ../vars.yml
 applications:
 # The sample application.
-- name: spring-app
+- name: employee-onboarding
   instances: 1
   memory: 896M
   buildpack: java_buildpack
   routes:
-    - route: spring-app-i308633.cfapps.eu10.hana.ondemand.com
+    - route: employee-onboarding-student<XXX>.cfapps.<landscape_host>
   path: target/spring-app.jar
   services:
     - xsuaa-authentication
@@ -21,14 +18,14 @@ applications:
   buildpack: nodejs_buildpack
   memory: 128M
   routes:
-    - route: spring-app-web-i308633.cfapps.eu10.hana.ondemand.com
+    - route: employee-onboarding-web-student<XXX>.cfapps.<landscape_host>
   services:
     - xsuaa-authentication
   env:
     destinations: >
       [
         {"name":"token-destination",
-         "url":"https://spring-app-i308633.cfapps.eu10.hana.ondemand.com",
+         "url":"https://employee-onboarding-student<XXX>.cfapps.<landscape_host>",
          "forwardAuthToken": true}
       ]
 ...
