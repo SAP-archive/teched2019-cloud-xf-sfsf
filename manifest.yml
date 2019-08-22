@@ -7,7 +7,7 @@ applications:
   buildpack: java_buildpack
   routes:
     - route: employee-onboarding-student<XXX>.cfapps.<landscape_host>
-  path: target/spring-app.jar
+  path: target/enployee-onboarding.jar
   services:
     - xsuaa-authentication
     - destination

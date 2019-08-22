@@ -11,9 +11,9 @@
 	</parent>
 
 	<groupId>com.sap.core.extensions</groupId>
-	<artifactId>spring-app</artifactId>
+	<artifactId>employee-onboarding</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-app</name>
+	<name>employee-onboarding</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
