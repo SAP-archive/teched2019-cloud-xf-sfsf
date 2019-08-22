@@ -7,7 +7,7 @@ applications:
   buildpack: java_buildpack
   routes:
     - route: employee-onboarding-student((ID)).((LANDSCAPE_HOST))
-  path: target/enployee-onboarding.jar
+  path: target/employee-onboarding.jar
   services:
     - xsuaa-authentication
     - destination
