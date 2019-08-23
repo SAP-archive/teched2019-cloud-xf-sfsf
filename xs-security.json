@@ -3,12 +3,8 @@
 	"tenant-mode": "dedicated",
 	"scopes": [
 		{
-			"name": "$XSAPPNAME.Read",
+			"name": "$XSAPPNAME.Manage",
 			"description": "Read Permissions."
-		},
-		{
-			"name": "$XSAPPNAME.Admin",
-			"description": "Admin permissions."
 		},
 		{
 			"name": "uaa.user",
@@ -17,36 +13,20 @@
 	],
 	"role-templates": [
 		{
-			"name": "Viewer",
-			"description": "View Data",
+			"name": "Onboarder",
+			"description": "View and complete todos regarding employee onboarding",
 			"scope-references": [
-				"$XSAPPNAME.Read", 
-				"uaa.user"
-			]
-		},
-		{
-			"name": "Administrator",
-			"description": "View Sensitive Data",
-			"scope-references": [
-				"$XSAPPNAME.Read",
-				"$XSAPPNAME.Admin",
+				"$XSAPPNAME.Manage", 
 				"uaa.user"
 			]
 		}
 	],
 	"role-collections": [
 		{
-			"name": "Viewer",
-			"description": "Viewer (read)",
+			"name": "Onboarder",
+			"description": "View and complete todos regarding employee onboarding",
 			"role-template-references": [
-				"$XSAPPNAME.Viewer"
-			]
-		},
-		{
-			"name": "Administrator",
-			"description": "Administrator (read all)",
-			"role-template-references": [
-				"$XSAPPNAME.Administrator"
+				"$XSAPPNAME.Onboarder"
 			]
 		}
 	]
