@@ -5,4 +5,4 @@
 ID: <XXX>
 
 # Choose cfapps.eu10.hana.ondemand.com for the EU10 landscape, cfapps.us10.hana.ondemand.com for US10
-LANDSCAPE_HOST: <LANDSCAPE_HOST>
+LANDSCAPE_APPS_DOMAIN: <LANDSCAPE_HOST>
