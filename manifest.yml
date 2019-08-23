@@ -25,7 +25,7 @@ applications:
     destinations: >
       [
         {"name":"token-destination",
-         "url":"https://employee-onboarding-student((ID)).((LANDSCAPE_HOST))
+         "url":"https://employee-onboarding-student((ID)).((LANDSCAPE_HOST))",
          "forwardAuthToken": true}
       ]
 ...
