@@ -21,17 +21,23 @@ sap.ui.define([
 				
 			};
 			
+			function showError(jqXHR, textStatus, errorThrown) {
+				MessageBox.error(jqXHR.responseText);
+			};
+			
 			jQuery.ajax({
 				method: "GET",
 				url: Config.serviceUrl + "/requests",
 				context: this
-			}).done(setRequestsModel);
+			}).done(setRequestsModel)
+			  .fail(showError);
 			
 			jQuery.ajax({
 				method: "GET",
 				url: Config.serviceUrl + "/currentUser",
 				context: this
-			}).done(setUserModel);
+			}).done(setUserModel)
+			  .fail(showError);
 		},
 		
 		showDetails : function(evt) {

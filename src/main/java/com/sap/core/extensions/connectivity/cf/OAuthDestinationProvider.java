@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.sap.cloud.security.xsuaa.token.Token;
 import com.sap.core.extensions.connectivity.OAuthRESTClient;
+import com.sap.core.extensions.successfactors.connectivity.DestinationNotFoundException;
 
 @Component
 public class OAuthDestinationProvider {
@@ -29,6 +30,10 @@ public class OAuthDestinationProvider {
 	public OAuthBearerDestination fetchBearerDestination(String destinationName, Token userToken) {
 		JSONObject destination = fetchDestination(destinationName, userToken);
 
+		if (destination == null) {
+			throw new DestinationNotFoundException(String.format("Destination with name [%s] could not be found", destinationName));
+		}
+		
 		String url = (String) destination.query(PATH_TO_URL);
 		String token = (String) destination.query(PATH_TO_TOKEN);
 
@@ -40,6 +45,11 @@ public class OAuthDestinationProvider {
 
 		String destinationServiceResponse = client.get(destinationServiceAPIPath + destinationName, String.class,
 				tokenForDestinationService);
+		
+		if (destinationServiceResponse == null) {
+			throw new DestinationNotFoundException(String.format("Destination with name [%s] could not be found", destinationName));
+		}
+		
 		JSONObject destination = new JSONObject(destinationServiceResponse);
 
 		String url = (String) destination.query(PATH_TO_URL);
@@ -54,7 +64,7 @@ public class OAuthDestinationProvider {
 		String destinationServiceResponse = client.get(destinationServiceAPIPath + destinationName, String.class,
 				tokenForDestinationService);
 
-		return new JSONObject(destinationServiceResponse);
+		return destinationServiceResponse != null ? new JSONObject(destinationServiceResponse) : null;
 	}
 
 }
