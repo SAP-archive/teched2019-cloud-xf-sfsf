@@ -13,7 +13,7 @@ applications:
     - destination
 
 # Application Router as web server
-- name: approuter-spring-app
+- name: approuter-employee-onboarding
   path: approuter
   buildpack: nodejs_buildpack
   memory: 128M
