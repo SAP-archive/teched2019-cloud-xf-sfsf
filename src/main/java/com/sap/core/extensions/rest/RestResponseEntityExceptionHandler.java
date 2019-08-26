@@ -22,7 +22,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	public ResponseEntity<String> handleIOException(DestinationNotFoundException exception) {
 		logError(exception);
 
-		return new ResponseEntity<>("Communication to SuccessFactors system failed. " + exception.getMessage(), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>("Communication to SAP SuccessFactors system failed. " + exception.getMessage() + ".", new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	private void logError(Exception exception) {
