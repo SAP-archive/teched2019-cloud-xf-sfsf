@@ -6,7 +6,7 @@ applications:
   memory: 896M
   buildpack: java_buildpack
   routes:
-    - route: employee-onboarding-student((ID)).((LANDSCAPE_HOST))
+    - route: employee-onboarding-student((ID)).((LANDSCAPE_APPS_DOMAIN))
   path: target/employee-onboarding.jar
   services:
     - xsuaa-authentication
@@ -18,14 +18,14 @@ applications:
   buildpack: nodejs_buildpack
   memory: 128M
   routes:
-    - route: employee-onboarding-web-student((ID)).((LANDSCAPE_HOST))
+    - route: employee-onboarding-web-student((ID)).((LANDSCAPE_APPS_DOMAIN))
   services:
     - xsuaa-authentication
   env:
     destinations: >
       [
         {"name":"token-destination",
-         "url":"https://employee-onboarding-student((ID)).((LANDSCAPE_HOST))",
+         "url":"https://employee-onboarding-student((ID)).((LANDSCAPE_APPS_DOMAIN))",
          "forwardAuthToken": true}
       ]
 ...
