@@ -14,7 +14,7 @@ This sample application - you need to clone or download it and import it in you 
 
 ## Configuration
 
-Please refer to detailed sample application help in this project to setup, configure and run the sample and connect it to your SAP SuccessFactors tenant for testing purpose. 
+Please refer to detailed sample application help in this project to setup, configure and run the sample and connect it to your SAP SuccessFactors tenant for testing purpose --> https://github.com/SAP-samples/teched2019-cloud-xf-sfsf/wiki
 
 ## Limitations
 
