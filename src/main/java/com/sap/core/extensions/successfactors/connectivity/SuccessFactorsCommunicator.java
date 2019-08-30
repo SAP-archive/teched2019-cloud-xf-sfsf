@@ -15,7 +15,7 @@ import com.sap.core.extensions.connectivity.cf.OAuthDestinationProvider;
 public class SuccessFactorsCommunicator {
 
 	private static final String USER_PROGAGATION_DESTINATION_NAME = "SFOAuth";
-	private static final String TECHNICAL_USER_DESTINATION_NAME = "SFOAuth_SYSTEM";
+	private static final String TECHNICAL_USER_DESTINATION_NAME = "SFOAuthTechUser";
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SuccessFactorsCommunicator.class);
 

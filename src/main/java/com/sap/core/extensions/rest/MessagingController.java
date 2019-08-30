@@ -30,11 +30,10 @@ public class MessagingController {
 		JSONObject bodyJson = new JSONObject(body);
 		String todoUserId = (String) bodyJson.query("/createdBy");
 		String userId = (String) bodyJson.query("/userId");
-		String fullName = (String) bodyJson.query("/firstName") + " " + (String) bodyJson.query("/lastName");
 
 		LOGGER.info(
-				"Recieved event for relocation of user {} [{}] assigned to onboard administrator {}. Request body [{}]",
-				fullName, userId, todoUserId, bodyJson);
+				"Recieved event for relocation of user {} assigned to onboard administrator {}. Request body [{}]",
+				userId, todoUserId, bodyJson);
 
 		onboardRequestService.createOnboardingRequest(todoUserId, userId);
 	}
