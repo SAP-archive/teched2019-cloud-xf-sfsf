@@ -4,13 +4,13 @@
 	<App>
 		<Page showHeader="true" title="SAP TechEd 2019" class="sapUiContentPadding" floatingFooter="true">
 			<VBox class="sapUiSmallMargin">
-				<HBox justifyContent="End" alignItems="Center">
+				<HBox id="profile" justifyContent="End" alignItems="Center">
 					<Image class="loginImage" src="data:image/jpeg;base64,{user>/photo}" />
 					<Label class="sapUiTinyMarginBegin myFontSize" text="{user>/defaultFullName}" />
 				</HBox>
 				<Title class="sapUiSmallMargin" text="Onboarding Requests"
 					titleStyle="H2" />
-				<Table items="{requests>/newEmployees}">
+				<Table id="table" items="{requests>/newEmployees}">
 					<dependents>
 						<mvc:XMLView id="detailsView" viewName="teched.view.UserDetails" />
 					</dependents>

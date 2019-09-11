@@ -28,16 +28,32 @@ sap.ui.define([
 			jQuery.ajax({
 				method: "GET",
 				url: Config.serviceUrl + "/requests",
-				context: this
+				context: this,
+				beforeSend : this.showBusy("table")
 			}).done(setRequestsModel)
-			  .fail(showError);
+			  .fail(showError)
+			  .always(this.hideBusy("table"));
 			
 			jQuery.ajax({
 				method: "GET",
 				url: Config.serviceUrl + "/currentUser",
-				context: this
+				context: this,
+				beforeSend : this.showBusy("profile")
 			}).done(setUserModel)
-			  .fail(showError);
+			  .fail(showError)
+			  .always(this.hideBusy("profile"));
+		},
+		
+		showBusy : function(controlId) {
+			return function(jqXHR, settings) {
+				this.byId(controlId).setBusy(true);
+			};
+		},
+
+		hideBusy : function(controlId) {
+			return function() {
+				this.byId(controlId).setBusy(false);
+			};
 		},
 		
 		showDetails : function(evt) {
