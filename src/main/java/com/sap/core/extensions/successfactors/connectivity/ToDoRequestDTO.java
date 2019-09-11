@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class ToDoRequestDTO {
 
+	private static final String APP_ROUTER_TEMPLATE = "https://employee-onboarding-web-%s.cfapps.eu10.hana.ondemand.com";
+	
 	private static final int MINUTE = 1000 * 60;
 	private static final int HOUR = MINUTE * 60;
 	private static final int DAY = HOUR * 24;
@@ -23,7 +25,7 @@ public class ToDoRequestDTO {
 		this.subjectId = subjectId;
 		this.categoryId = INTELLIGENT_SERVICE_CATEGORY;
 		this.dueDate = getNextWeekDate();
-		this.linkUrl = "https://google.com";
+		this.linkUrl = String.format(APP_ROUTER_TEMPLATE, subjectId);
 		this.userNav = new UserNavRequestDTO(subjectId);
 	}
 

@@ -63,11 +63,6 @@ public class TestController {
 			onboardRequestService.saveOnboardingRequest(todo, relocatedUserId);
 		}
 	}
-
-	public static void main(String[] args) {
-		String todoName = "Onboard Aanya Singh(sfadmin)";
-		System.out.println(todoName.substring(todoName.indexOf('(') + 1, todoName.indexOf(')')));
-	}	
 	
 	@GetMapping(value = "/v1/currentUser")
 	public ResponseEntity<User> getUserPhoto(@AuthenticationPrincipal Token userToken) {
