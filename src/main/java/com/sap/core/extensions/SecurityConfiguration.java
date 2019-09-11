@@ -30,8 +30,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // session is created by approuter
 			.and()
 				.authorizeRequests()
-				.antMatchers("/*").hasAuthority("Manage")
 				.antMatchers("/v1/webhook").permitAll()
+				.antMatchers("/**").hasAuthority("Manage")
 				.anyRequest().authenticated()
 			.and()
 				.oauth2ResourceServer()
