@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.sap.cloud.security.xsuaa.token.Token;
 import com.sap.core.extensions.successfactors.connectivity.util.ODataResponseUtils;
 
 @Component
@@ -41,13 +42,15 @@ public class ToDoAccessor {
 	}
 
 	public void completeTodo(ToDo todo) {
-		String completeToDoPayload = COMPLETE_TODO_REQUEST_PREFIX + todo.getTodoEntryId() + COMPLETE_TODO_REQUEST_SUFFIX;
+		String completeToDoPayload = COMPLETE_TODO_REQUEST_PREFIX + todo.getTodoEntryId()
+				+ COMPLETE_TODO_REQUEST_SUFFIX;
 
 		communicator.postWithTechnicalUser(UPSERT_API_PATH, completeToDoPayload);
 	}
 
-	public List<ToDo> listUserTodos(String userId) {
-		String responseString = communicator.getWithTechnicalUser(API_PATH + String.format(USER_TODOS_QUERY, userId), String.class);
+	public List<ToDo> listUserTodos(Token userToken) {
+		String responseString = communicator.getWithUserPropagation(
+				API_PATH + String.format(USER_TODOS_QUERY, userToken.getLogonName()), String.class, userToken);
 
 		return responseUtils.readODataResponse(responseString, TODO_LIST_TYPE);
 	}

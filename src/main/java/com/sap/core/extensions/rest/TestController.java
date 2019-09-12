@@ -54,7 +54,7 @@ public class TestController {
 	}
 
 	private void loadPreset(Token userToken) {
-		List<ToDo> listUserTodos = todoAccessor.listUserTodos(userToken.getLogonName());
+		List<ToDo> listUserTodos = todoAccessor.listUserTodos(userToken);
 
 		for (ToDo todo : listUserTodos) {
 			String todoName = todo.getTodoEntryName();

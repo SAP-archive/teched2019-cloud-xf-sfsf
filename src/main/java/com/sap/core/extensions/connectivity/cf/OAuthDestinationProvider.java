@@ -1,6 +1,8 @@
 package com.sap.core.extensions.connectivity.cf;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,57 +16,54 @@ public class OAuthDestinationProvider {
 	private static final String GET_DESTINATION_API_PATH = "/destination-configuration/v1/destinations/";
 	private static final String PATH_TO_TOKEN = "/authTokens/0/value";
 	private static final String PATH_TO_URL = "/destinationConfiguration/URL";
-	private final TokenManager tokenExchanger;
+	private final TokenManager tokenManager;
 	private final String destinationServiceAPIPath;
 	private final OAuthRESTClient client;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(OAuthDestinationProvider.class);
 
 	@Autowired
 	public OAuthDestinationProvider(TokenManager tokenExchanger, CredentialsProvider credentialsProvider,
 			OAuthRESTClient client) {
-		this.tokenExchanger = tokenExchanger;
+		this.tokenManager = tokenExchanger;
 		this.client = client;
 		this.destinationServiceAPIPath = credentialsProvider.getDestinationCredentials().getServiceURI()
 				+ GET_DESTINATION_API_PATH;
 	}
 
 	public OAuthBearerDestination fetchBearerDestination(String destinationName, Token userToken) {
-		JSONObject destination = fetchDestination(destinationName, userToken);
+		String tokenForDestinationService = tokenManager.exchangeTokenForDestinationService(userToken);
 
-		if (destination == null) {
-			throw new DestinationNotFoundException(String.format("Destination with name [%s] could not be found", destinationName));
-		}
-		
-		String url = (String) destination.query(PATH_TO_URL);
-		String token = (String) destination.query(PATH_TO_TOKEN);
-
-		return new OAuthBearerDestination(url, token);
+		return fetchFromDestinationService(destinationName, tokenForDestinationService);
 	}
 
 	public OAuthBearerDestination fetchBearerDestination(String destinationName) {
-		String tokenForDestinationService = tokenExchanger.getTokenForDestinationServce();
+		String tokenForDestinationService = tokenManager.getTokenForDestinationServce();
 
+		return fetchFromDestinationService(destinationName, tokenForDestinationService);
+	}
+
+	private OAuthBearerDestination fetchFromDestinationService(String destinationName, String destinationServiceToken) {
 		String destinationServiceResponse = client.get(destinationServiceAPIPath + destinationName, String.class,
-				tokenForDestinationService);
-		
-		if (destinationServiceResponse == null) {
-			throw new DestinationNotFoundException(String.format("Destination with name [%s] could not be found", destinationName));
-		}
-		
-		JSONObject destination = new JSONObject(destinationServiceResponse);
+				destinationServiceToken);
 
+		LOGGER.info("Recieved response for destination [{}]: [{}]", destinationName, destinationServiceResponse);
+
+		if (destinationServiceResponse == null) {
+			throw new DestinationNotFoundException(
+					String.format("Destination with name [%s] could not be found", destinationName));
+		}
+
+		JSONObject destinationJSON = new JSONObject(destinationServiceResponse);
+
+		return buildDestinationFromJson(destinationJSON);
+	}
+
+	private OAuthBearerDestination buildDestinationFromJson(JSONObject destination) {
 		String url = (String) destination.query(PATH_TO_URL);
 		String token = (String) destination.query(PATH_TO_TOKEN);
 
 		return new OAuthBearerDestination(url, token);
-	}
-
-	private JSONObject fetchDestination(String destinationName, Token userToken) {
-		String tokenForDestinationService = tokenExchanger.exchangeTokenForDestinationService(userToken);
-
-		String destinationServiceResponse = client.get(destinationServiceAPIPath + destinationName, String.class,
-				tokenForDestinationService);
-
-		return destinationServiceResponse != null ? new JSONObject(destinationServiceResponse) : null;
 	}
 
 }
