@@ -35,8 +35,8 @@ public class OnboardRequestService {
 		requestRepository.saveNewOnboardingRequest(todo, relocatedUser);
 	}
 
-	public void saveOnboardingRequest(ToDo todo, String relocatedUserId) {
-		User relocatedUser = userAccessor.fetchUserProfile(relocatedUserId);
+	public void saveOnboardingRequest(ToDo todo, String relocatedUserId, Token userToken) {
+		User relocatedUser = userAccessor.fetchUserProfile(relocatedUserId, userToken);
 		requestRepository.saveNewOnboardingRequest(todo, relocatedUser);
 	}
 

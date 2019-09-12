@@ -22,16 +22,16 @@ import com.sap.core.extensions.successfactors.connectivity.User;
 import com.sap.core.extensions.successfactors.connectivity.UserDataAccessor;
 
 @RestController
-public class TestController {
+public class OnboardingController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(TestController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(OnboardingController.class);
 	
 	private final OnboardRequestService onboardRequestService;
 	private final UserDataAccessor userAccessor;
 	private final ToDoAccessor todoAccessor;
 
 	@Autowired
-	public TestController(OnboardRequestService onboardRequestService, UserDataAccessor userAccessor,
+	public OnboardingController(OnboardRequestService onboardRequestService, UserDataAccessor userAccessor,
 			ToDoAccessor todoAccessor) {
 		this.onboardRequestService = onboardRequestService;
 		this.userAccessor = userAccessor;
@@ -60,7 +60,7 @@ public class TestController {
 			String todoName = todo.getTodoEntryName();
 			String relocatedUserId = todoName.substring(todoName.indexOf('(') + 1, todoName.indexOf(')'));
 
-			onboardRequestService.saveOnboardingRequest(todo, relocatedUserId);
+			onboardRequestService.saveOnboardingRequest(todo, relocatedUserId,userToken);
 		}
 	}
 	
