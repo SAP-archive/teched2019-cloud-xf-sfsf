@@ -41,11 +41,11 @@ public class ToDoAccessor {
 		return new ToDo(id, name);
 	}
 
-	public void completeTodo(ToDo todo) {
+	public void completeTodo(ToDo todo, Token userToken) {
 		String completeToDoPayload = COMPLETE_TODO_REQUEST_PREFIX + todo.getTodoEntryId()
 				+ COMPLETE_TODO_REQUEST_SUFFIX;
 
-		communicator.postWithTechnicalUser(UPSERT_API_PATH, completeToDoPayload);
+		communicator.postWithUserPropagation(UPSERT_API_PATH, completeToDoPayload, userToken);
 	}
 
 	public List<ToDo> listUserTodos(Token userToken) {

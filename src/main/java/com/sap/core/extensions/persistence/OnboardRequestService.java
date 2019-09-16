@@ -46,7 +46,7 @@ public class OnboardRequestService {
 		if (null == request) {
 			return;
 		}
-		todoAccessor.completeTodo(request.getTodo());
+		todoAccessor.completeTodo(request.getTodo(), userToken);
 	}
 
 	public Collection<OnboardRequestEntity> listOnboardingRequests() {
