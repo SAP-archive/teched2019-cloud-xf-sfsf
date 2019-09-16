@@ -50,6 +50,18 @@ public class UserDataAccessor {
 
 		return user;
 	}
+	
+	public User fetchSimpleProfileWithPicture(String userName, Token userToken) {
+		String firstName = userToken.getGivenName();
+		String lastName = userToken.getFamilyName();
+		String photo = fetchUserPicture(userName, userToken);
+		
+		User user = new User();
+		user.setDefaultFullName(firstName + " " + lastName);
+		user.setPhoto(photo);
+		
+		return user;
+	}
 
 	private String fetchUserPicture(String userName, Token userToken) {
 		String resultString;

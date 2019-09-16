@@ -66,7 +66,7 @@ public class OnboardingController {
 	
 	@GetMapping(value = "/v1/currentUser")
 	public ResponseEntity<User> getUserPhoto(@AuthenticationPrincipal Token userToken) {
-		User currentUser = userAccessor.fetchUserProfile(userToken.getLogonName(), userToken);
+		User currentUser = userAccessor.fetchSimpleProfileWithPicture(userToken.getLogonName(), userToken);
 
 		return ResponseEntity.ok(currentUser);
 	}
