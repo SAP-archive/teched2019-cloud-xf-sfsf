@@ -1,5 +1,7 @@
 package com.sap.core.extensions.connectivity.cf;
 
+import java.util.concurrent.TimeUnit;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.sap.cloud.security.xsuaa.token.Token;
 import com.sap.core.extensions.connectivity.OAuthRESTClient;
 import com.sap.core.extensions.successfactors.connectivity.DestinationNotFoundException;
+import com.sap.core.extensions.successfactors.connectivity.util.TimeUtil;
 
 @Component
 public class OAuthDestinationProvider {
@@ -44,6 +47,19 @@ public class OAuthDestinationProvider {
 	}
 
 	private OAuthBearerDestination fetchFromDestinationService(String destinationName, String destinationServiceToken) {
+		String destinationServiceResponse = fetchDestinationContent(destinationName, destinationServiceToken);
+
+		if (!destinationServiceResponse.contains("authTokens")) {
+			TimeUtil.sleep(1000l); // give time to the destination service to cache the token
+			destinationServiceResponse = fetchDestinationContent(destinationName, destinationServiceToken);
+		}
+
+		JSONObject destinationJSON = new JSONObject(destinationServiceResponse);
+
+		return buildDestinationFromJson(destinationJSON);
+	}
+
+	private String fetchDestinationContent(String destinationName, String destinationServiceToken) {
 		String destinationServiceResponse = client.get(destinationServiceAPIPath + destinationName, String.class,
 				destinationServiceToken);
 
@@ -53,10 +69,7 @@ public class OAuthDestinationProvider {
 			throw new DestinationNotFoundException(
 					String.format("Destination with name [%s] could not be found", destinationName));
 		}
-
-		JSONObject destinationJSON = new JSONObject(destinationServiceResponse);
-
-		return buildDestinationFromJson(destinationJSON);
+		return destinationServiceResponse;
 	}
 
 	private OAuthBearerDestination buildDestinationFromJson(JSONObject destination) {
