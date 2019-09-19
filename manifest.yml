@@ -4,7 +4,8 @@ applications:
 - name: employee-onboarding
   instances: 1
   memory: 896M
-  buildpack: java_buildpack
+  buildpacks: 
+    - java_buildpack
   routes:
     - route: employee-onboarding-student((ID)).((LANDSCAPE_APPS_DOMAIN))
   path: target/employee-onboarding.jar
@@ -15,7 +16,8 @@ applications:
 # Application Router as web server
 - name: approuter-employee-onboarding
   path: approuter
-  buildpack: nodejs_buildpack
+  buildpacks: 
+    - nodejs_buildpack
   memory: 128M
   routes:
     - route: employee-onboarding-web-student((ID)).((LANDSCAPE_APPS_DOMAIN))
