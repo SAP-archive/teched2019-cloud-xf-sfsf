@@ -2,6 +2,6 @@
 # some data to make the urls unique
 # change to another value this if the hostname is already taken
 # use lowercase characters!
-ID: "<XXX>"
+ID: "XXX"
 
 LANDSCAPE_APPS_DOMAIN: "cfapps.eu10.hana.ondemand.com"
