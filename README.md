@@ -1,4 +1,4 @@
-# teched2019-cloud-xf-sfsf
+# SAP TechEd 2019 - Create SAP SuccessFactors Extensions with SAP Cloud Platform Extension Factory
 
 ## Project Description
 
